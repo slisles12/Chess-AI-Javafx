@@ -24,6 +24,17 @@ public class Pawn extends Piece {
 		this.moved = moved;
 	}
 	
+	/*
+	 * sets dimensions of piece
+	 */
+	@Override
+	public void setDimension(int i, int j) {
+
+		this.positionX = i;
+		this.positionY = j;
+		
+	} 
+	
 	//returns the possible movements of the pawn
 	public ArrayList<ArrayList<Integer>> moves() {
 		nextMoves = new ArrayList<ArrayList<Integer>>();
@@ -31,31 +42,55 @@ public class Pawn extends Piece {
 		//if we are white
 		if (color == 'W') {
 			//if not at edge
-			if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() != 'W') {
+			if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//if we can still double move
-			if (moved == false && boardState.getState().get(positionY + 2).get(positionX).getColor() != 'W') {
+			if (positionY + 2 >= 0 && moved == false && boardState.getState().get(positionY + 2).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY + 2);
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
+			}
+			//taking piece to the right
+			if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() == 'B') {
+				nextMoves.add(new ArrayList<Integer>());
+				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
+				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
+			}
+			//taking piece to the left
+			if (positionY + 1 <= 7 && positionX - 1 > 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() == 'B') {
+				nextMoves.add(new ArrayList<Integer>());
+				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
+				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
 			}
 		}
 		//if we are black
 		else {
 			//if not at edge
-			if (positionY - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX).getColor() != 'B') {
+			if (positionY - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//if we can still double
-			if (moved == false && boardState.getState().get(positionY - 2).get(positionX).getColor() != 'B') {
+			if (positionY - 2 >= 0 && moved == false && boardState.getState().get(positionY - 2).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY - 2);
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
+			}
+			//taking piece to the right
+			if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() == 'W') {
+				nextMoves.add(new ArrayList<Integer>());
+				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
+			}
+			//taking piece to the left
+			if (positionY + 1 <= 7 && positionX - 1 > 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() == 'W') {
+				nextMoves.add(new ArrayList<Integer>());
+				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
 			}
 		}
 

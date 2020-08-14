@@ -20,7 +20,17 @@ public class Empty extends Piece {
 		this.positionY = positionY;
 		this.boardState = boardState;
 	}
+	
+	/*
+	 * sets dimensions of piece
+	 */
+	@Override
+	public void setDimension(int i, int j) {
 
+		this.positionX = i;
+		this.positionY = j;
+		
+	} 
 
 	//returns the possible movements of the pawn
 	public ArrayList<ArrayList<Integer>> moves() {

@@ -32,10 +32,6 @@ public class Board {
 		//no mans land
 		for (int i = 2; i < 6; i ++){
 			for (int j = 0; j < 8; j++) {
-				
-				if (j == 4 && i == 4) {
-					boardState.get(4).add(new Knight(j, j, 'W', this));
-				}
 				boardState.get(i).add(new Empty(j, i, this));
 			}
 		}
@@ -105,6 +101,39 @@ public class Board {
 		 
 		 //return the string
 		 return temp;
-	 } 
+	 }
+
+	public boolean doSwap(int[] target, int[] buttonPressed) {
+
+		Piece currentPiece = boardState.get(buttonPressed[0]).get(buttonPressed[1]);
+		ArrayList<ArrayList<Integer>> possibleMoves = currentPiece.moves();
+		
+		if (possibleMoves != null) {
+			for (ArrayList<Integer> move : possibleMoves) {
+				for (Integer val: move) {
+					System.out.print(val);
+					System.out.print(" ");
+				}
+				System.out.println();
+				if ((int) move.get(0) == target[0] && (int) move.get(1) == target[1]) {
+					boardState.get(buttonPressed[0]).set(buttonPressed[1], new Empty(buttonPressed[0], buttonPressed[1], this));
+					currentPiece.setDimension(target[1], target[0]);
+					boardState.get(target[0]).set(target[1], currentPiece);
+					
+					if (turn == 'W') {
+						turn = 'B';
+					}
+					else {
+						turn = 'W';
+					}
+					
+					System.out.println();
+					
+					return true;
+				}
+			}
+		}
+		return false;
+	} 
 	
 }

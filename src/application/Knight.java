@@ -22,6 +22,17 @@ public class Knight extends Piece{
 		this.color = color;
 	}
 	
+	/*
+	 * sets dimensions of piece
+	 */
+	@Override
+	public void setDimension(int i, int j) {
+
+		this.positionX = i;
+		this.positionY = j;
+		
+	} 
+	
 	//returns the possible movements of the knight
 	public ArrayList<ArrayList<Integer>> moves() {
 		

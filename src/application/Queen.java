@@ -22,6 +22,17 @@ public class Queen extends Piece {
 		this.color = color;
 	}
 	
+	/*
+	 * sets dimensions of piece
+	 */
+	@Override
+	public void setDimension(int i, int j) {
+
+		this.positionX = i;
+		this.positionY = j;
+		
+	} 
+	
 	//returns the possible movements of the queen
 	public ArrayList<ArrayList<Integer>> moves() {
 		nextMoves = new ArrayList<ArrayList<Integer>>();
