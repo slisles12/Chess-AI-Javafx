@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -88,8 +90,8 @@ public class Main extends Application {
 		            		 //set title
 		                	 primaryStage.setTitle("Game is being played");
 		                	 
-		                 	//final for action handlers
-		                 	final Board otherBoard = board;
+		                 	 //final for action handlers
+		                 	 final Board otherBoard = board;
 		                 	
 		                	 //make new grid for buttons
 		                     GridPane grid = new GridPane();
@@ -153,11 +155,6 @@ public class Main extends Application {
 	                             }
 	                             
 	                         }
-                             
-		                     //add grid to the scene
-		                     primaryStage.setScene(new Scene(grid,height,width));
-		                     //show the scene
-		                     primaryStage.show();
 		                     
 		                     //for every piece
 	                         for (int i = 0; i < 8; i++) {
@@ -169,11 +166,19 @@ public class Main extends Application {
 	                            		 //if pawn
 	                            		 if (board.getState().get(j).get(i).toString() == "P") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_pawn.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("P");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
@@ -183,7 +188,7 @@ public class Main extends Application {
 	                									 buttonPressed[0] = GridPane.getRowIndex(bt);
 	                									 buttonPressed[1] = GridPane.getColumnIndex(bt);
 	                								 }
-	                							 });
+	                							 }); 
 	                						 }		 
 	                						 else {
 	                							//set action 
@@ -221,11 +226,19 @@ public class Main extends Application {
 	                            		 //if rook
 	                            		 else if (board.getState().get(j).get(i).toString() == "R") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_rook.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("R");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
@@ -274,12 +287,20 @@ public class Main extends Application {
 	                            		 //if knight
 	                            		 else if (board.getState().get(j).get(i).toString() == "K") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_knight.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("K");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
-
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
+	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
@@ -327,11 +348,19 @@ public class Main extends Application {
 	                            		 //if king
 	                            		 else if (board.getState().get(j).get(i).toString() == "S") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_king.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("S");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
@@ -380,11 +409,19 @@ public class Main extends Application {
 	                            		 //if queen
 	                            		 else if (board.getState().get(j).get(i).toString() == "Q") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_queen.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("Q");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
@@ -433,11 +470,19 @@ public class Main extends Application {
 	                            		 //if bishop
 	                            		 else if (board.getState().get(j).get(i).toString() == "B") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("black_bishop.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("B");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: Black;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'B') {
@@ -489,11 +534,19 @@ public class Main extends Application {
 	                            		 //if pawn
 	                            		 if (board.getState().get(j).get(i).toString() == "P") {
 	                            			 
+	                            			 //image
+	                            			 Image img = new Image("white_pawn.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("P");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -542,11 +595,19 @@ public class Main extends Application {
 	                            		 //if rook
 	                            		 else if (board.getState().get(j).get(i).toString() == "R") {
 	                            			 
+	                            			//image
+	                            			 Image img = new Image("white_rook.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("R");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -596,11 +657,19 @@ public class Main extends Application {
 	                            		 //if knight
 	                            		 else if (board.getState().get(j).get(i).toString() == "K") {
 	                            			 
+	                            			//image
+	                            			 Image img = new Image("white_knight.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("K");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -649,11 +718,19 @@ public class Main extends Application {
 	                            		 //if king
 	                            		 else if (board.getState().get(j).get(i).toString() == "S") {
 	                            			 
+	                            			//image
+	                            			 Image img = new Image("white_king.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("S");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -702,11 +779,19 @@ public class Main extends Application {
 	                            		 //if queen
 	                            		 else if (board.getState().get(j).get(i).toString() == "Q") {
 	                            			 
+	                            			//image
+	                            			 Image img = new Image("white_queen.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("Q");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -756,11 +841,19 @@ public class Main extends Application {
 	                            		 //if bishop
 	                            		 else if (board.getState().get(j).get(i).toString() == "B") {
 	                            			 
+	                            			//image
+	                            			 Image img = new Image("white_bishop.png");
+	                            		     ImageView image = new ImageView(img);
+	                            		     image.setFitHeight(80);
+	                            		     image.setFitWidth(58);
+	                            		     image.setPreserveRatio(true);
+	                            			 
 	                            			 //new button
-	                            			 Button bt = new Button("B");
-	                                         bt.setShape(new Circle(width/8));
-	                                         bt.setPrefSize(80, 65);
-	                                         bt.setStyle("-fx-background-color: White;" +  "-fx-font-size:25;");
+	                            			 Button bt = new Button();
+	                                         bt.setPrefSize(80, 58);
+	                                         
+	                                         bt.setGraphic(image);
+	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
 	                						 if (board.getTurn() == 'W') {
@@ -809,6 +902,11 @@ public class Main extends Application {
 	                             }
 	                             
 	                         }
+		                     
+		                     //add grid to the scene
+		                     primaryStage.setScene(new Scene(grid,height,width));
+		                     //show the scene
+		                     primaryStage.show();
 		                     
 			            	 stop();
 			            	 
