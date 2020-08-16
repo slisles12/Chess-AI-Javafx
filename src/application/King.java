@@ -35,70 +35,64 @@ public class King extends Piece {
 	//returns the possible movements of the king
 	public ArrayList<ArrayList<Integer>> moves() {
 		nextMoves = new ArrayList<ArrayList<Integer>>();	
+
+		//move up
+		if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX);
+		}
 		
-		//if we are white
-		if (color == 'W') {
-			
-			//move up
-			if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() != 'W') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-			
-			//move down
-			if (positionY - 1 > 0 && boardState.getState().get(positionY - 1).get(positionX).getColor() != 'W') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-			
-			//move right
-			if (positionX + 1 <= 7 && boardState.getState().get(positionY).get(positionX + 1).getColor() != 'W') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY);
-				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
-			}
-			
-			//more left
-			if (positionX - 1 > 0 && boardState.getState().get(positionY).get(positionX - 1).getColor() != 'W') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY);
-				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
-			}
-
+		//move down
+		if (positionY - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX);
 		}
-		//if we are black
-		else {
-			//move up
-			if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() != 'B') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-			
-			//more down
-			if (positionY - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX).getColor() != 'B') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-			
-			//move right
-			if (positionX + 1 <= 7 && boardState.getState().get(positionY).get(positionX + 1).getColor() != 'B') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-			
-			//move left
-			if (positionX - 1 >= 0 && boardState.getState().get(positionY).get(positionX - 1).getColor() != 'B') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX);
-			}
-
+		
+		//move right
+		if (positionX + 1 <= 7 && boardState.getState().get(positionY).get(positionX + 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY);
+			nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
 		}
+		
+		//more left
+		if (positionX - 1 >= 0 && boardState.getState().get(positionY).get(positionX - 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY);
+			nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
+		}
+		
+		//move corner
+		if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
+		}
+		
+		//move corner
+		if (positionY - 1 >= 0 && positionX + 1 <= 7 && boardState.getState().get(positionY - 1).get(positionX + 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
+		}
+		
+		//move corner
+		if (positionY + 1 <= 7 && positionX - 1 >= 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
+		}
+		
+		//more corner
+		if (positionY - 1 >= 0 && positionX - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX - 1).getColor() != this.color) {
+			nextMoves.add(new ArrayList<Integer>());
+			nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+			nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
+		}
+
+
 
 		//return moves
 		return nextMoves;

@@ -41,7 +41,7 @@ public class Rook extends Piece{
 
 		if (!(positionY + 1 >= 7)) {
 			//for vertical moves up the board
-			if (boardState.getState().get(positionY + 1).get(positionX).toString().equals("O")) {
+			if (boardState.getState().get(positionY + 1).get(positionX).getColor() != this.color) {
 				for (int i = positionY; i <= 7; i++) {
 					//if we have not hit a piece
 					if (boardState.getState().get(i).get(positionX).toString().equals("O")) {
@@ -61,7 +61,7 @@ public class Rook extends Piece{
 		}
 		
 		if (!(positionY - 1 <= 0)) {
-			if (boardState.getState().get(positionY - 1).get(positionX).toString().equals("O")) {
+			if (boardState.getState().get(positionY - 1).get(positionX).getColor() != this.color) {
 				//for vertical moves down the board
 				for (int i = positionY; i >= 0; i--) {
 					//if we have not hit a piece
@@ -82,7 +82,7 @@ public class Rook extends Piece{
 		}
 
 		if (!(positionX + 1 >= 7)) {
-			if (boardState.getState().get(positionY).get(positionX + 1).toString().equals("O")) {
+			if (boardState.getState().get(positionY).get(positionX + 1).getColor() != this.color) {
 				//for horizontal moves to the right of the board
 				for (int i = positionX; i <= 7; i++) {
 					//if we have not hit a piece
@@ -103,7 +103,7 @@ public class Rook extends Piece{
 		}
 		
 		if (!(positionX - 1 <= 0)) {
-			if (boardState.getState().get(positionY).get(positionX - 1).toString().equals("O")) {
+			if (boardState.getState().get(positionY).get(positionX - 1).getColor() != this.color) {
 				//for horizontal moves left of the board
 				for (int i = positionX; i >= 0; i--) {
 					//if we have not hit a piece

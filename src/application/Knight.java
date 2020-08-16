@@ -33,6 +33,8 @@ public class Knight extends Piece{
 		
 	} 
 	
+	
+	
 	//returns the possible movements of the knight
 	public ArrayList<ArrayList<Integer>> moves() {
 		

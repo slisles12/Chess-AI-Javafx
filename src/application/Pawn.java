@@ -32,6 +32,8 @@ public class Pawn extends Piece {
 
 		this.positionX = i;
 		this.positionY = j;
+		this.moved = true;
+		
 		
 	} 
 	
@@ -48,7 +50,7 @@ public class Pawn extends Piece {
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//if we can still double move
-			if (positionY + 2 >= 0 && moved == false && boardState.getState().get(positionY + 2).get(positionX).getColor() == 'O') {
+			if (positionY + 2 <= 7 && moved == false && boardState.getState().get(positionY + 2).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY + 2);
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
@@ -81,16 +83,16 @@ public class Pawn extends Piece {
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//taking piece to the right
-			if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() == 'W') {
-				nextMoves.add(new ArrayList<Integer>());
-				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
-				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
-			}
-			//taking piece to the left
-			if (positionY + 1 <= 7 && positionX - 1 > 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() == 'W') {
+			if (positionY - 1 >= 0 && positionX + 1 <= 7 && boardState.getState().get(positionY - 1).get(positionX + 1).getColor() == 'W') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
+			}
+			//taking piece to the left
+			if (positionY - 1 > 0 && positionX - 1 > 0 && boardState.getState().get(positionY - 1).get(positionX - 1).getColor() == 'W') {
+				nextMoves.add(new ArrayList<Integer>());
+				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
+				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
 			}
 		}
 
