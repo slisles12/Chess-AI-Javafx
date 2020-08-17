@@ -143,6 +143,12 @@ public class Main extends Application {
 	            								 if (board.doSwap(target, buttonPressed)) {
 	            									 buttonPressed[0] = -1;
 	            									 buttonPressed[1] = -1;
+	            						            	
+	            						            System.out.println("check for white is " + board.getCheckWhite());
+	            						            System.out.println("check for black is " + board.getCheckBlack());
+	            						            System.out.println("Check mate for white is " + board.getCheckmateWhite());
+	            						            System.out.println("check mate for black is " + board.getCheckmateBlack());
+	            						            System.out.println();
 	            								 }
 	            								 
 	            								 start();

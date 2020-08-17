@@ -7,8 +7,6 @@ import java.util.ArrayList;
 public class Empty extends Piece {
 	private int positionX; //the position x of the piece
 	private int positionY; //the position y of the piece
-	private Board boardState; //the current board of the game
-	private ArrayList<ArrayList<Integer>> nextMoves; //holds next possible movements
 	private char color = 'O'; //no color
 	
 	/*
@@ -48,5 +46,19 @@ public class Empty extends Piece {
 	 public String toString() { 
 		 return "O";
 	 } 
+	 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 
 }

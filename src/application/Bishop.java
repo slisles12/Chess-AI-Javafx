@@ -210,5 +210,19 @@ public class Bishop extends Piece{
 	 public String toString() { 
 		 return "B";
 	 } 
+	 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 
 }

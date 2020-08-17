@@ -130,5 +130,19 @@ public class Knight extends Piece{
 	 public String toString() { 
 		 return "K";
 	 } 
+	 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 	
 }

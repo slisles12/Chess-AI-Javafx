@@ -149,5 +149,19 @@ public class King extends Piece {
 	 public String toString() { 
 		 return "S";
 	 } 
+	 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 	
 }

@@ -271,5 +271,19 @@ public class Queen extends Piece {
 	 public String toString() { 
 		 return "Q";
 	 } 
+	 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 	
 }

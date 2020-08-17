@@ -23,7 +23,7 @@ public class Pawn extends Piece {
 		this.color = color;
 		this.moved = moved;
 	}
-	
+
 	/*
 	 * sets dimensions of piece
 	 */
@@ -42,7 +42,7 @@ public class Pawn extends Piece {
 		nextMoves = new ArrayList<ArrayList<Integer>>();
 		
 		//if we are white
-		if (color == 'W') {
+		if (color == 'B') {
 			//if not at edge
 			if (positionY + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX).getColor() == 'O') {
 				nextMoves.add(new ArrayList<Integer>());
@@ -56,13 +56,13 @@ public class Pawn extends Piece {
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//taking piece to the right
-			if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() == 'B') {
+			if (positionY + 1 <= 7 && positionX + 1 <= 7 && boardState.getState().get(positionY + 1).get(positionX + 1).getColor() == 'W') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
 			}
 			//taking piece to the left
-			if (positionY + 1 <= 7 && positionX - 1 > 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() == 'B') {
+			if (positionY + 1 <= 7 && positionX - 1 >= 0 && boardState.getState().get(positionY + 1).get(positionX - 1).getColor() == 'W') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY + 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
@@ -83,13 +83,13 @@ public class Pawn extends Piece {
 				nextMoves.get(nextMoves.size() - 1).add(positionX);
 			}
 			//taking piece to the right
-			if (positionY - 1 >= 0 && positionX + 1 <= 7 && boardState.getState().get(positionY - 1).get(positionX + 1).getColor() == 'W') {
+			if (positionY - 1 >= 0 && positionX + 1 <= 7 && boardState.getState().get(positionY - 1).get(positionX + 1).getColor() == 'B') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX + 1);
 			}
 			//taking piece to the left
-			if (positionY - 1 > 0 && positionX - 1 > 0 && boardState.getState().get(positionY - 1).get(positionX - 1).getColor() == 'W') {
+			if (positionY - 1 >= 0 && positionX - 1 >= 0 && boardState.getState().get(positionY - 1).get(positionX - 1).getColor() == 'B') {
 				nextMoves.add(new ArrayList<Integer>());
 				nextMoves.get(nextMoves.size() - 1).add(positionY - 1);
 				nextMoves.get(nextMoves.size() - 1).add(positionX - 1);
@@ -131,4 +131,17 @@ public class Pawn extends Piece {
 		 return "P";
 	 } 
 
+	 /*
+	  * returns position x
+	  */
+	 public int getPositionX() {
+		 return positionX;
+	 }
+	 
+	 /*
+	  * returns position y
+	  */
+	 public int getPositionY() {
+		 return positionY;
+	 }
 }
