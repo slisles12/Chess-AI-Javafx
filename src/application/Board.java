@@ -75,25 +75,25 @@ public class Board {
 				Piece temp = oldBoard.boardState.get(i).get(j);
 				
 				//recreating the pieces
-				if (oldBoard.boardState.get(i).get(j).toString() == "P"){
+				if (temp.toString() == "P"){
 					this.boardState.get(i).add(new Pawn(temp.positionX, temp.positionY, temp.getColor(), temp.moved, this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "Q"){
+				else if (temp.toString() == "Q"){
 					this.boardState.get(i).add(new Queen(temp.positionX, temp.positionY, temp.getColor(), this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "R"){
+				else if (temp.toString() == "R"){
 					this.boardState.get(i).add(new Rook(temp.positionX, temp.positionY, temp.getColor(), temp.castled, this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "K"){
+				else if (temp.toString() == "K"){
 					this.boardState.get(i).add(new Knight(temp.positionX, temp.positionY, temp.getColor(), this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "S"){
+				else if (temp.toString() == "S"){
 					this.boardState.get(i).add(new King(temp.positionX, temp.positionY, temp.getColor(), this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "B"){
+				else if (temp.toString() == "B"){
 					this.boardState.get(i).add(new Bishop(temp.positionX, temp.positionY, temp.getColor(), this));
 				}
-				else if (oldBoard.boardState.get(i).get(j).toString() == "O"){
+				else if (temp.toString() == "O"){
 					this.boardState.get(i).add(new Empty(temp.positionX, temp.positionY, this));
 				}
 			}
@@ -326,6 +326,8 @@ public class Board {
 	public boolean doSwap(int[] target, int[] buttonPressed) {
 
 		Piece currentPiece = boardState.get(buttonPressed[0]).get(buttonPressed[1]);
+		Piece lost = boardState.get(target[0]).get(target[1]);
+		
 		ArrayList<ArrayList<Integer>> possibleMoves = currentPiece.moves();
 		
 		//if we have moves
@@ -335,31 +337,36 @@ public class Board {
 				//if we can move
 				if ((int) move.get(0) == target[0] && (int) move.get(1) == target[1]) {
 					
-					//if white is checked
+					//if turn is white
 					if (turn == 'W') {
-						Board temp = new Board(this);
-						
-						System.out.println(temp.getCheckmateWhite());
+
+						//swap
 						boardState.get(buttonPressed[0]).set(buttonPressed[1], new Empty(buttonPressed[0], buttonPressed[1], this));
 						currentPiece.setDimension(target[1], target[0]);
 						boardState.get(target[0]).set(target[1], currentPiece);
+
 						
 						if (getCheckWhite() == true) {
-							this.boardState = temp.boardState;
+							boardState.get(buttonPressed[0]).set(buttonPressed[1], currentPiece);
+							currentPiece.setDimension(buttonPressed[1], buttonPressed[0]);
+							boardState.get(target[0]).set(target[1], lost);
 							return false;
-						}		
-					}
-					//if black is checked
+						}
+
+					}	
+					//if turn is black
 					else {
-						Board temp = new Board(this);
 						
-						System.out.println(temp.getCheckmateWhite());
+						//swap
 						boardState.get(buttonPressed[0]).set(buttonPressed[1], new Empty(buttonPressed[0], buttonPressed[1], this));
 						currentPiece.setDimension(target[1], target[0]);
 						boardState.get(target[0]).set(target[1], currentPiece);
+
 						
 						if (getCheckBlack() == true) {
-							this.boardState = temp.boardState;
+							boardState.get(buttonPressed[0]).set(buttonPressed[1], currentPiece);
+							currentPiece.setDimension(buttonPressed[1], buttonPressed[0]);
+							boardState.get(target[0]).set(target[1], lost);
 							return false;
 						}
 					}
