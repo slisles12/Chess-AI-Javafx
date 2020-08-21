@@ -62,7 +62,7 @@ public class Player {
 	public double MaxValue(Board board, int depth, char player, Double alpha, Double beta) {
 		
 		//if we have reached the end of our leaves
-		if (depth == 2 || board.getCheckmateWhite() == true || board.getCheckmateBlack() == true) {
+		if (depth == 3 || board.getCheckmateWhite() == true || board.getCheckmateBlack() == true) {
 			//return score
 			return board.boardValue(player);
 		}
@@ -124,7 +124,7 @@ public class Player {
 	public double MinValue(Board board, int depth, char player, Double alpha, Double beta) {
 	
 		//if we have reached the end of our leaves
-		if (depth == 2 || board.getCheckmateWhite() == true || board.getCheckmateBlack() == true) {
+		if (depth == 3 || board.getCheckmateWhite() == true || board.getCheckmateBlack() == true) {
 			//System.out.println(board.toString());
 			
 			//return score

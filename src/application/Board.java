@@ -22,8 +22,8 @@ public class Board {
 		boardState.get(0).add(new Rook(0, 0, 'B', false, this));
 		boardState.get(0).add(new Knight(1, 0, 'B', this));
 		boardState.get(0).add(new Bishop(2, 0, 'B', this));
-		boardState.get(0).add(new King(3, 0, 'B', this));
-		boardState.get(0).add(new Queen(4, 0, 'B', this));
+		boardState.get(0).add(new Queen(3, 0, 'B', this));
+		boardState.get(0).add(new King(4, 0, 'B', this));
 		boardState.get(0).add(new Bishop(5, 0, 'B', this));
 		boardState.get(0).add(new Knight(6, 0, 'B', this));
 		boardState.get(0).add(new Rook(7, 0, 'B', false, this));
@@ -49,8 +49,8 @@ public class Board {
 		boardState.get(7).add(new Rook(0, 7, 'W', false, this));
 		boardState.get(7).add(new Knight(1, 7, 'W', this));
 		boardState.get(7).add(new Bishop(2, 7, 'W', this));
-		boardState.get(7).add(new King(3, 7, 'W', this));
-		boardState.get(7).add(new Queen(4, 7, 'W', this));
+		boardState.get(7).add(new Queen(3, 7, 'W', this));
+		boardState.get(7).add(new King(4, 7, 'W', this));
 		boardState.get(7).add(new Bishop(5, 7, 'W', this));
 		boardState.get(7).add(new Knight(6, 7, 'W', this));
 		boardState.get(7).add(new Rook(7, 7, 'W', false, this));
