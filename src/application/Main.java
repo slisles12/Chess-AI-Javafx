@@ -1,5 +1,7 @@
 package application;
 	
+import java.util.ArrayList;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -23,6 +25,8 @@ import javafx.scene.text.Font;
 public class Main extends Application {
 	
     static boolean readyPlay = false; //if we are ready to play the game
+    static boolean gameOver = false;
+    static boolean playerBlack = true;
     static int height = 600; //height of GUI
     static int width = 600; //width of GUI
     static int[] buttonPressed = new int[2]; //array of button pressed
@@ -30,7 +34,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		
-		Board board = new Board();
+		Board b = new Board();
+		ArrayList<Board> board = new ArrayList<Board>();
+		board.add(b);
 		
 		try {
 			 	Label label = new Label("Chess!");
@@ -38,14 +44,18 @@ public class Main extends Application {
 		        label.setLayoutX(200);
 
 		        //button
-		        Button button1 = new Button("Play");
-
+		        Button button1 = new Button("Play Without AI");
+		        Button button2 = new Button("Play With AI");
+		        
 		        //font
 		        button1.setStyle("-fx-font-size:20;");
+		        button2.setStyle("-fx-font-size:20;");
 
 		        //dimensions
 		        button1.setPrefHeight(40);
 		        button1.setPrefWidth(220);
+		        button2.setPrefHeight(40);
+		        button2.setPrefWidth(220);
 
 		        //pane
 		        Pane root = new Pane();
@@ -53,10 +63,14 @@ public class Main extends Application {
 		        //position
 		        button1.setLayoutX(200);
 		        button1.setLayoutY(250);
+		        button2.setLayoutX(200);
+		        button2.setLayoutY(300);
+
 
 
 		        //add things to root
 		        root.getChildren().add(button1);
+		        root.getChildren().add(button2);
 		        root.getChildren().add(label);
 		     
 		        //create scene
@@ -70,8 +84,14 @@ public class Main extends Application {
 		        button1.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
 		            @Override public void handle(ActionEvent e) {
 			            readyPlay = true;
-				        
-				        System.out.println(readyPlay);
+		            }
+		        });
+		        
+		      //create event for play button
+		        button2.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
+		            @Override public void handle(ActionEvent e) {
+			            readyPlay = true;
+			            playerBlack = false;
 		            }
 		        });
 		        
@@ -84,18 +104,68 @@ public class Main extends Application {
 		        new AnimationTimer() {
 		            @Override
 		            public void handle(long now) {
+		            
+		            	 Player AI = new Player();
+		            	 
+		            	 if (board.get(0).getTurn() == 'B' && playerBlack == false) {
+		            		 board.set(0, AI.AlphaBeta(board.get(0), board.get(0).getTurn()));
+		            		
+		            	 }
+		            	
+		            	 if (board.get(0).getCheckmateBlack() || board.get(0).getCheckmateWhite()) {
+		            		 gameOver = true;
+		            	 }
+		            	 
+		            	 if (gameOver == true && readyPlay == true) {
+		            		Label label = new Label("GAME OVER!");
+		     		        label.setFont(new Font("Arial", 60));
+		     		        label.setLayoutX(140);
+
+		     		        //button
+		     		        Button button1 = new Button("back to home");
+
+		     		        //font
+		     		        button1.setStyle("-fx-font-size:20;");
+
+		     		        //dimensions
+		     		        button1.setPrefHeight(40);
+		     		        button1.setPrefWidth(220);
+
+		     		        //pane
+		     		        Pane root = new Pane();
+		     		        
+		     		        //position
+		     		        button1.setLayoutX(200);
+		     		        button1.setLayoutY(250);
+
+
+		     		        //add things to root
+		     		        root.getChildren().add(button1);
+		     		        root.getChildren().add(label);
+		     		     
+		     		        //create scene
+		     		        Scene scene = new Scene(root,600,600);
+
+		     		        //add to and show stages
+		     		        primaryStage.setScene(scene);
+		     		        primaryStage.show();
+		     		        
+		     		        //create event for play button
+		     		        button1.setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
+		     		            @Override public void handle(ActionEvent e) {
+		     		            	readyPlay = false;
+		     			            Main.launch(Main.class);
+		     		            }
+		     		        });
+		            	 }
 		            	
 		            	 //if we are ready to play
-		            	 if (readyPlay == true) {
+		            	 if (readyPlay == true && gameOver != true) {
 		            		 //set title
 		                	 primaryStage.setTitle("Game is being played");
 		                	 
-		                 	 //final for action handlers
-		                 	 final Board otherBoard = board;
-		                 	
 		                	 //make new grid for buttons
-		                     GridPane grid = new GridPane();
-		                     
+		                     GridPane grid = new GridPane(); 
 		                     
 		                     //for every piece
 	                         for (int i = 0; i < 8; i++) {
@@ -140,16 +210,20 @@ public class Main extends Application {
 	            								 target[1] = GridPane.getColumnIndex(rectangle);
 	            								 
 	            								 //attempt the swap
-	            								 if (board.doSwap(target, buttonPressed)) {
+	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	            									 buttonPressed[0] = -1;
 	            									 buttonPressed[1] = -1;
-	            						            	
-	            						            System.out.println("check for white is " + board.getCheckWhite());
-	            						            System.out.println("check for black is " + board.getCheckBlack());
-	            						            System.out.println("Check mate for white is " + board.getCheckmateWhite());
-	            						            System.out.println("check mate for black is " + board.getCheckmateBlack());
-	            						            System.out.println();
+	             								 
 	            								 }
+	            								 
+	            								 
+             						             System.out.println("Check for white is " + board.get(0).getCheckWhite());
+             						             System.out.println("Check for black is " + board.get(0).getCheckBlack());
+             						             System.out.println("Check mate for white is " + board.get(0).getCheckmateWhite());
+             						             System.out.println("Check mate for black is " + board.get(0).getCheckmateBlack());
+             						             System.out.println("Score for white is " + board.get(0).boardValue('W'));
+            						             System.out.println("Score for black is " + board.get(0).boardValue('B'));
+             						             System.out.println();
 	            								 
 	            								 start();
 	     
@@ -167,10 +241,10 @@ public class Main extends Application {
 	                             for (int j = 0; j < 8; j++) {
 
 	                            	 //if black
-	                            	 if (board.getState().get(j).get(i).getColor() == 'B') {
+	                            	 if (board.get(0).getState().get(j).get(i).getColor() == 'B') {
 	                            		 
 	                            		 //if pawn
-	                            		 if (board.getState().get(j).get(i).toString() == "P") {
+	                            		 if (board.get(0).getState().get(j).get(i).toString() == "P") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_pawn.png");
@@ -187,7 +261,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -214,7 +288,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -230,7 +304,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if rook
-	                            		 else if (board.getState().get(j).get(i).toString() == "R") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "R") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_rook.png");
@@ -247,7 +321,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -275,7 +349,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -291,7 +365,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if knight
-	                            		 else if (board.getState().get(j).get(i).toString() == "K") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "K") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_knight.png");
@@ -308,7 +382,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -336,7 +410,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -352,7 +426,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if king
-	                            		 else if (board.getState().get(j).get(i).toString() == "S") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "S") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_king.png");
@@ -369,7 +443,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -397,7 +471,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -413,7 +487,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if queen
-	                            		 else if (board.getState().get(j).get(i).toString() == "Q") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "Q") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_queen.png");
@@ -430,7 +504,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -458,7 +532,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -474,7 +548,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if bishop
-	                            		 else if (board.getState().get(j).get(i).toString() == "B") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "B") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("black_bishop.png");
@@ -491,7 +565,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'B') {
+	                						 if (board.get(0).getTurn() == 'B' && playerBlack == true) {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -519,7 +593,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -535,10 +609,10 @@ public class Main extends Application {
 	                            		 }
 	                            	 }	 
 	                           
-	                            	 else if (board.getState().get(j).get(i).getColor() == 'W') {
+	                            	 else if (board.get(0).getState().get(j).get(i).getColor() == 'W') {
 	                            		 
 	                            		 //if pawn
-	                            		 if (board.getState().get(j).get(i).toString() == "P") {
+	                            		 if (board.get(0).getState().get(j).get(i).toString() == "P") {
 	                            			 
 	                            			 //image
 	                            			 Image img = new Image("white_pawn.png");
@@ -555,7 +629,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -583,7 +657,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -599,7 +673,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if rook
-	                            		 else if (board.getState().get(j).get(i).toString() == "R") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "R") {
 	                            			 
 	                            			//image
 	                            			 Image img = new Image("white_rook.png");
@@ -616,7 +690,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -644,7 +718,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -661,7 +735,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if knight
-	                            		 else if (board.getState().get(j).get(i).toString() == "K") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "K") {
 	                            			 
 	                            			//image
 	                            			 Image img = new Image("white_knight.png");
@@ -678,7 +752,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -706,7 +780,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -722,7 +796,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if king
-	                            		 else if (board.getState().get(j).get(i).toString() == "S") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "S") {
 	                            			 
 	                            			//image
 	                            			 Image img = new Image("white_king.png");
@@ -739,7 +813,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -767,7 +841,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -783,7 +857,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if queen
-	                            		 else if (board.getState().get(j).get(i).toString() == "Q") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "Q") {
 	                            			 
 	                            			//image
 	                            			 Image img = new Image("white_queen.png");
@@ -800,7 +874,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -828,7 +902,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }
@@ -845,7 +919,7 @@ public class Main extends Application {
 	                            		 }
 	                            		 
 	                            		 //if bishop
-	                            		 else if (board.getState().get(j).get(i).toString() == "B") {
+	                            		 else if (board.get(0).getState().get(j).get(i).toString() == "B") {
 	                            			 
 	                            			//image
 	                            			 Image img = new Image("white_bishop.png");
@@ -862,7 +936,7 @@ public class Main extends Application {
 	                                         bt.setStyle("-fx-background-color:transparent");
 	                                         
 	                                         //if it is white's turn and white is human
-	                						 if (board.getTurn() == 'W') {
+	                						 if (board.get(0).getTurn() == 'W') {
 	                							 bt.setOnAction(new EventHandler<ActionEvent>() {
 	                								 @Override public void handle(ActionEvent e) {
 	                									 //set values of button pressed
@@ -890,7 +964,7 @@ public class Main extends Application {
 	 	      	            								 
 	 	      	            								 
 	 	      	            								 //attempt the swap
-	 	      	            								 if (board.doSwap(target, buttonPressed)) {
+	 	      	            								 if (board.get(0).doSwap(target, buttonPressed)) {
 	 	      	            									 buttonPressed[0] = -1;
 	 	      	            									 buttonPressed[1] = -1;
 	 	      	            								 }

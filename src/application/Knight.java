@@ -112,7 +112,7 @@ public class Knight extends Piece{
 	 */
 	public double getValue() {
 		//position evals of knight
-		double[][] knightEvals =  {
+		double[][] knightValsWhite =  {
                {-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0},
                {-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0},
                {-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0},
@@ -121,8 +121,29 @@ public class Knight extends Piece{
                {-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0},
                {-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0},
                {-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0}
-           };
-		return knightEvals[positionX][positionY] + 3;
+		};
+		
+		//if we are a white bishop
+		if (color == 'W') {
+			//return the position
+			return knightValsWhite[positionX][positionY] + 3;
+		}
+		//if we are a black bishop
+		else {
+			//make black bishop evals
+		    double knightValsBlack[][] = new double[8][8];
+		    
+		    //black bishop evals are just reversed bishop evals
+		    for(int i = 8-1; i >= 0; i--) {
+		        for(int j = 8-1; j >= 0; j--) {
+		        	knightValsBlack[8-1-i][8-1-j] = knightValsWhite[i][j];
+		        }
+		    }
+		    
+		    //return the bishop evals for a black piece
+		    return knightValsBlack[positionX][positionY] + 3;
+		    
+		}
 	}
 	
 	

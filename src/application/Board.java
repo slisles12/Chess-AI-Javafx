@@ -59,45 +59,37 @@ public class Board {
 	
 	public Board(Board oldBoard) {
 		
-		//swap the turns
-		if (oldBoard.getTurn() == 'B') {
-			this.turn = 'W';
-		}
-		else {
-			this.turn = 'B';
-		}
-		
 		//set the new board
 		for (int i = 0; i < 8; i++) {
 			boardState.add(new ArrayList<Piece>());
 			for (int j = 0; j < 8; j++) {
-				
-				Piece temp = oldBoard.boardState.get(i).get(j);
-				
+
 				//recreating the pieces
-				if (temp.toString() == "P"){
-					this.boardState.get(i).add(new Pawn(temp.positionX, temp.positionY, temp.getColor(), temp.moved, this));
+				if (oldBoard.boardState.get(i).get(j).toString() == "P"){
+					this.boardState.get(i).add(new Pawn(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), oldBoard.boardState.get(i).get(j).moved, this));
 				}
-				else if (temp.toString() == "Q"){
-					this.boardState.get(i).add(new Queen(temp.positionX, temp.positionY, temp.getColor(), this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "Q"){
+					this.boardState.get(i).add(new Queen(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), this));
 				}
-				else if (temp.toString() == "R"){
-					this.boardState.get(i).add(new Rook(temp.positionX, temp.positionY, temp.getColor(), temp.castled, this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "R"){
+					this.boardState.get(i).add(new Rook(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), oldBoard.boardState.get(i).get(j).castled, this));
 				}
-				else if (temp.toString() == "K"){
-					this.boardState.get(i).add(new Knight(temp.positionX, temp.positionY, temp.getColor(), this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "K"){
+					this.boardState.get(i).add(new Knight(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), this));
 				}
-				else if (temp.toString() == "S"){
-					this.boardState.get(i).add(new King(temp.positionX, temp.positionY, temp.getColor(), this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "S"){
+					this.boardState.get(i).add(new King(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), this));
 				}
-				else if (temp.toString() == "B"){
-					this.boardState.get(i).add(new Bishop(temp.positionX, temp.positionY, temp.getColor(), this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "B"){
+					this.boardState.get(i).add(new Bishop(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), oldBoard.boardState.get(i).get(j).getColor(), this));
 				}
-				else if (temp.toString() == "O"){
-					this.boardState.get(i).add(new Empty(temp.positionX, temp.positionY, this));
+				else if (oldBoard.boardState.get(i).get(j).toString() == "O"){
+					this.boardState.get(i).add(new Empty(oldBoard.boardState.get(i).get(j).getPositionX(), oldBoard.boardState.get(i).get(j).getPositionY(), this));
 				}
 			}
 		}
+		
+		this.turn = oldBoard.turn;
 		
 		//check for checks
 		checkBlack = getCheckBlack();
@@ -179,24 +171,21 @@ public class Board {
 		
 		//re start
 		checkmateBlack = false;
-		
-		//list of checks
-		ArrayList<Boolean> listOfChecks = new ArrayList<Boolean>();
-		
+
 		//if we are checked
 		if (getCheckBlack()) {
 			
 			//go through
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
-					if (boardState.get(i).get(j).toString() == "S" && boardState.get(i).get(j).getColor() == 'B') {
+					if (boardState.get(i).get(j).toString() == "B") {
 						
-						Piece blackKing = boardState.get(i).get(j);
+						Piece piece = boardState.get(i).get(j);
 						
 						Board temp = new Board(this);
 						
 						//for each possible move
-						for (ArrayList<Integer> moveSet : blackKing.moves()) {
+						for (ArrayList<Integer> moveSet : piece.moves()) {
 							
 							int[] target = new int[2];
 							int[] current = new int[2];
@@ -208,29 +197,22 @@ public class Board {
 							current[1] = j;
 							
 							//attempt the swap
-							temp.doSwap(target, current);
+							if (temp.doSwap(target, current)) {
+								checkmateBlack = true;
+								return checkmateBlack;
+							}
 
-							listOfChecks.add(temp.getCheckBlack());
+							
 						}
 					}
 				}
 			}
-		}
-		
-		if (listOfChecks.size() > 0) {
-			for (boolean temp : listOfChecks) {
-				if (temp == false) {
-					return checkmateBlack;
-				}
-			}
 			
-			checkmateBlack = true;
-			
+			checkmateBlack = false;
 			return checkmateBlack;
 		}
-		else {
-			return checkmateBlack;
-		}
+
+		return checkmateBlack;
 	}
 	
 	/*
@@ -238,26 +220,24 @@ public class Board {
 	 */
 	public boolean getCheckmateWhite() {
 		
+		
 		//re start
 		checkmateWhite = false;
-		
-		//list of checks
-		ArrayList<Boolean> listOfChecks = new ArrayList<Boolean>();
-		
+
 		//if we are checked
 		if (getCheckWhite()) {
 			
 			//go through
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
-					if (boardState.get(i).get(j).toString() == "S" && boardState.get(i).get(j).getColor() == 'W') {
+					if (boardState.get(i).get(j).toString() == "W") {
 						
-						Piece whiteKing = boardState.get(i).get(j);
+						Piece piece = boardState.get(i).get(j);
 						
 						Board temp = new Board(this);
 						
 						//for each possible move
-						for (ArrayList<Integer> moveSet : whiteKing.moves()) {
+						for (ArrayList<Integer> moveSet : piece.moves()) {
 							
 							int[] target = new int[2];
 							int[] current = new int[2];
@@ -269,33 +249,23 @@ public class Board {
 							current[1] = j;
 							
 							//attempt the swap
-							temp.doSwap(target, current);
+							if (temp.doSwap(target, current)) {
+								System.out.println(temp.toString());
+								checkmateWhite = true;
+								return checkmateWhite;
+							}
 
-							listOfChecks.add(temp.getCheckWhite());
+							
 						}
 					}
 				}
 			}
-		}
-		
-		//go through each check
-		
-		
-		if (listOfChecks.size() > 0) {
-			for (boolean temp : listOfChecks) {
-				if (temp == false) {
-					return checkmateWhite;
-				}
-			}
 			
-			checkmateWhite = true;
-			
+			checkmateWhite = false;
 			return checkmateWhite;
 		}
-		else {
-			return checkmateWhite;
-		}
-
+		
+		return checkmateWhite;
 	}
 	
 	/*
@@ -343,7 +313,26 @@ public class Board {
 						//swap
 						boardState.get(buttonPressed[0]).set(buttonPressed[1], new Empty(buttonPressed[0], buttonPressed[1], this));
 						currentPiece.setDimension(target[1], target[0]);
-						boardState.get(target[0]).set(target[1], currentPiece);
+						
+						//recreating the pieces
+						if (currentPiece.toString() == "P"){
+							this.boardState.get(target[0]).set(target[1], new Pawn(target[0], target[1], currentPiece.getColor(), currentPiece.moved, this));
+						}
+						else if (currentPiece.toString() == "Q"){
+							this.boardState.get(target[0]).set(target[1], new Queen(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "R"){
+							this.boardState.get(target[0]).set(target[1], new Rook(target[0], target[1], currentPiece.getColor(), currentPiece.castled, this));
+						}
+						else if (currentPiece.toString() == "K"){
+							this.boardState.get(target[0]).set(target[1], new Knight(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "S"){
+							this.boardState.get(target[0]).set(target[1], new King(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "B"){
+							this.boardState.get(target[0]).set(target[1], new Bishop(target[0], target[1], currentPiece.getColor(), this));
+						}
 
 						
 						if (getCheckWhite() == true) {
@@ -351,6 +340,18 @@ public class Board {
 							currentPiece.setDimension(buttonPressed[1], buttonPressed[0]);
 							boardState.get(target[0]).set(target[1], lost);
 							return false;
+						}
+						else {
+							//swap tha turns
+							if (turn == 'B') {
+								turn = 'W';
+							}
+							else {
+								turn = 'B';
+							}
+							
+							//return true
+							return true;
 						}
 
 					}	
@@ -360,34 +361,230 @@ public class Board {
 						//swap
 						boardState.get(buttonPressed[0]).set(buttonPressed[1], new Empty(buttonPressed[0], buttonPressed[1], this));
 						currentPiece.setDimension(target[1], target[0]);
-						boardState.get(target[0]).set(target[1], currentPiece);
-
 						
+						//recreating the pieces
+						if (currentPiece.toString() == "P"){
+							this.boardState.get(target[0]).set(target[1], new Pawn(target[0], target[1], currentPiece.getColor(), currentPiece.moved, this));
+						}
+						else if (currentPiece.toString() == "Q"){
+							this.boardState.get(target[0]).set(target[1], new Queen(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "R"){
+							this.boardState.get(target[0]).set(target[1], new Rook(target[0], target[1], currentPiece.getColor(), currentPiece.castled, this));
+						}
+						else if (currentPiece.toString() == "K"){
+							this.boardState.get(target[0]).set(target[1], new Knight(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "S"){
+							this.boardState.get(target[0]).set(target[1], new King(target[0], target[1], currentPiece.getColor(), this));
+						}
+						else if (currentPiece.toString() == "B"){
+							this.boardState.get(target[0]).set(target[1], new Bishop(target[0], target[1], currentPiece.getColor(), this));
+						}
+
 						if (getCheckBlack() == true) {
 							boardState.get(buttonPressed[0]).set(buttonPressed[1], currentPiece);
 							currentPiece.setDimension(buttonPressed[1], buttonPressed[0]);
 							boardState.get(target[0]).set(target[1], lost);
 							return false;
 						}
+						else {
+							//swap tha turns
+							if (turn == 'B') {
+								turn = 'W';
+							}
+							else {
+								turn = 'B';
+							}
+							
+							//return true
+							return true;
+						}
 					}
-				}	
+				}
 			}
-
-					
-			//swap tha turns
-			if (turn == 'B') {
-				turn = 'W';
+		}
+		return false;
+	}
+	
+	/*
+	 * gives the value of the board for a specific color
+	 */
+	public double boardValue(char color) {
+		
+		//reset values
+		double blackValue = 0.0;
+		double whiteValue = 0.0;
+		
+		//go through
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (boardState.get(i).get(j).toString() != "O") {
+					Piece piece = boardState.get(i).get(j);
+					if (piece.getColor() == 'W') {
+						whiteValue += piece.getValue();
+					}
+					else if (piece.getColor() == 'B') {
+						blackValue += piece.getValue();
+					}
+				}
 			}
-			else {
-				turn = 'B';
-			}
-			
-			//return true
-			return true;
+		}
+		
+		//add for checks and checkmates
+		if (getCheckmateBlack()) {
+			blackValue -= 1000;
+		}
+		else if (getCheckBlack()) {
+			blackValue -= 100;
+		}
+		if (getCheckmateWhite()) {
+			whiteValue -= 1000;
+		}
+		else if (getCheckWhite()) {
+			whiteValue -= 100;
+		}
+		
+		
+		//value based on color
+		if (color == 'W') {
+			return whiteValue - blackValue;
+		}
+		else {
+			return blackValue - whiteValue;
 		}
 
-		//not possible to swap
-		return false;
-	} 
+		
+	}
+	
+	/*
+	 * changes the turn
+	 */
+	public void changeTurn() {
+		if (this.turn == 'B') {
+			this.turn = 'W';
+		}
+		else {
+			this.turn = 'B';
+		}
+	}
+	
+	/*
+	 * method to return the pieces left for a given color
+	 */
+	public ArrayList<Piece> getPiecesLeft (char color){
+		
+		//holds pieces
+		ArrayList<Piece> boardPieces = new ArrayList<Piece>();
+		
+		//go through
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (boardState.get(i).get(j).toString() != "O") {
+					Piece piece = boardState.get(i).get(j);
+					if (piece.getColor() == color) {
+						boardPieces.add(piece);
+					}
+				}
+			}
+		}
+		
+		//return list
+		return boardPieces;
+	}
+	
+	/*
+	 * method that returns list of possible boards for a given piece
+	 */
+	public ArrayList<Board> nextBoards (Piece piece){
+		
+		ArrayList<Board> nextBoards = new ArrayList<Board>();
+		
+		//go through
+		for (ArrayList<Integer> moveSet : piece.moves()) {
+				Board temp = new Board(this);
+			
+				int[] target = new int[2];
+				int[] current = new int[2];
+				
+				target[0] = moveSet.get(0);
+				target[1] = moveSet.get(1);
+				
+				current[0] = piece.getPositionY();
+				current[1] = piece.getPositionX();
+				
+				//if turn is white
+				if (turn == 'W') {
 
+					//swap
+					temp.boardState.get(current[0]).set(current[1], new Empty(current[0], current[1], temp));
+					
+					//recreating the pieces
+					if (piece.toString() == "P"){
+						temp.boardState.get(target[0]).set(target[1], new Pawn(moveSet.get(1), moveSet.get(0), piece.getColor(), piece.moved, temp));
+					}
+					else if (piece.toString() == "Q"){
+						temp.boardState.get(target[0]).set(target[1], new Queen(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "R"){
+						temp.boardState.get(target[0]).set(target[1], new Rook(moveSet.get(1), moveSet.get(0), piece.getColor(), piece.castled, temp));
+					}
+					else if (piece.toString() == "K"){
+						temp.boardState.get(target[0]).set(target[1], new Knight(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "S"){
+						temp.boardState.get(target[0]).set(target[1], new King(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "B"){
+						temp.boardState.get(target[0]).set(target[1], new Bishop(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					
+					if (!temp.getCheckWhite()) {
+						temp.changeTurn();
+						nextBoards.add(temp);
+					}
+
+
+				}	
+				//if turn is black
+				else {
+					
+					//swap
+					temp.boardState.get(current[0]).set(current[1], new Empty(current[0], current[1], temp));
+
+					//recreating the pieces
+					if (piece.toString() == "P"){
+						temp.boardState.get(target[0]).set(target[1], new Pawn(moveSet.get(1), moveSet.get(0), piece.getColor(), piece.moved, temp));
+					}
+					else if (piece.toString() == "Q"){
+						temp.boardState.get(target[0]).set(target[1], new Queen(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "R"){
+						temp.boardState.get(target[0]).set(target[1], new Rook(moveSet.get(1), moveSet.get(0), piece.getColor(), piece.castled, temp));
+					}
+					else if (piece.toString() == "K"){
+						temp.boardState.get(target[0]).set(target[1], new Knight(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "S"){
+						temp.boardState.get(target[0]).set(target[1], new King(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					else if (piece.toString() == "B"){
+						temp.boardState.get(target[0]).set(target[1], new Bishop(moveSet.get(1), moveSet.get(0), piece.getColor(), temp));
+					}
+					
+					if (!temp.getCheckBlack()) {
+						temp.changeTurn();
+						nextBoards.add(temp);
+					}
+
+				}
+		}
+		
+		//return lists of boards
+		return nextBoards;
+	}
+	
+	
+	
 }
+

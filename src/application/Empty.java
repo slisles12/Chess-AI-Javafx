@@ -61,4 +61,9 @@ public class Empty extends Piece {
 		 return positionY;
 	 }
 
+	@Override
+	protected double getValue() {
+		return 0.0;
+	}
+
 }

@@ -19,4 +19,5 @@ public abstract class Piece {
 	public abstract void setDimension(int i, int j);
 	public abstract int getPositionX();
 	public abstract int getPositionY();
+	protected abstract double getValue();
 }

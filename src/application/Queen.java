@@ -253,7 +253,7 @@ public class Queen extends Piece {
 	 */
 	public double getValue() {
 		//position evals of queen
-		double[][] queenEvals =   {
+		double[][] queenvalsWhite =   {
            { -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0},
            { -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0},
            { -1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0},
@@ -264,7 +264,28 @@ public class Queen extends Piece {
            { -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0}
         };
 		
-		return queenEvals[positionX][positionY] + 3;
+		//if we are a white bishop
+		if (color == 'W') {
+			//return the position
+			return queenvalsWhite[positionX][positionY] + 3;
+		}
+		//if we are a black bishop
+		else {
+			//make black bishop evals
+		    double queenvalsBlack[][] = new double[8][8];
+		    
+		    //black bishop evals are just reversed bishop evals
+		    for(int i = 8-1; i >= 0; i--) {
+		        for(int j = 8-1; j >= 0; j--) {
+		        	queenvalsBlack[8-1-i][8-1-j] = queenvalsWhite[i][j];
+		        }
+		    }
+		    
+		    //return the bishop evals for a black piece
+		    return queenvalsBlack[positionX][positionY] + 3;
+		    
+		}
+
 	}
 	
 	 @Override
